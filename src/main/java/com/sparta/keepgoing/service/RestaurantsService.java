@@ -25,7 +25,8 @@ public class RestaurantsService {
             throw new IllegalArgumentException("배달비는 500원 단위로 입력해주세요.");
         }
         Restaurants restaurants = new Restaurants(restaurantsDto);
-        return restaurantsRepository.save(restaurants);
+        restaurantsRepository.save(restaurants);
+        return restaurants;
     }
 
     public List<Restaurants> showRestaurants() {
