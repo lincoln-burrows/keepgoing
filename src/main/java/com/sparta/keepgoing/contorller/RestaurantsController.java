@@ -1,14 +1,14 @@
 package com.sparta.keepgoing.contorller;
 
 
+import com.sparta.keepgoing.dto.FoodDto;
 import com.sparta.keepgoing.dto.RestaurantsDto;
+import com.sparta.keepgoing.models.Food;
 import com.sparta.keepgoing.models.Restaurants;
+import com.sparta.keepgoing.service.FoodService;
 import com.sparta.keepgoing.service.RestaurantsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,4 +27,6 @@ public class RestaurantsController {
     public List<Restaurants> showRestaurants(){
         return restaurantsService.showRestaurants();
     }
+
+
 }

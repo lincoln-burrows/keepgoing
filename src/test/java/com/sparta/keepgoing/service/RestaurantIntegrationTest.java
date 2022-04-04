@@ -167,13 +167,12 @@ class RestaurantIntegrationTest {
                     "/restaurants",
                     RestaurantDto[].class
             );
-            System.out.println("여기까지 오나");
+
 
 
             // then
             assertEquals(HttpStatus.OK, response.getStatusCode());
             RestaurantDto[] responseRestaurants = response.getBody();
-
 
             assertNotNull(responseRestaurants);
             assertEquals(registeredRestaurants.size(), responseRestaurants.length);
