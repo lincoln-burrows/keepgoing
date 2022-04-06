@@ -30,6 +30,7 @@ public class FoodService {
                 throw new IllegalArgumentException();}
 
             Optional<Food> found = foodRepository.findByRestaurantIdAndName(restaurantId, temp);
+
 //            System.err.println("size= "+ found.size());
             if(found.isPresent()){throw new IllegalArgumentException();}
             for(int j = i+1; j < foodDtos.size(); j++) {

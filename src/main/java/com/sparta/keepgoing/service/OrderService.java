@@ -1,65 +1,63 @@
 package com.sparta.keepgoing.service;
 
-import com.sparta.keepgoing.dto.FoodDto;
-import com.sparta.keepgoing.models.Food;
+import com.sparta.keepgoing.dto.*;
+
+import com.sparta.keepgoing.models.FoodOrder;
+import com.sparta.keepgoing.models.OrderList;
 import com.sparta.keepgoing.repository.FoodRepository;
+import com.sparta.keepgoing.repository.OrderListRepository;
+import com.sparta.keepgoing.repository.OrderRepository;
+import com.sparta.keepgoing.repository.RestaurantsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
 
+
+    private final OrderRepository orderRepository;
+    private final RestaurantsRepository restaurantsRepository;
     private final FoodRepository foodRepository;
-    public void registerFood(Long restaurantId, List<FoodDto> foodDtos) {
-            List<Food> checkedFood = new ArrayList<>();
-//        for (FoodDto foodDto : foodDtos) {
-        for (int i = 0; i<foodDtos.size(); i++){
-                FoodDto foodDto = foodDtos.get(i);
-            String temp = foodDto.getName();
-            System.err.println("name= "+ temp);
-            Long pay = foodDto.getPrice();
-            if (pay<100 || pay>1000000) {
-                throw new IllegalArgumentException();}
-            else if (pay%100 !=0) {
-                throw new IllegalArgumentException();}
+    private final OrderListRepository orderListRepository;
 
-            Optional<Food> found = foodRepository.findByRestaurantIdAndName(restaurantId, temp);
-//            System.err.println("size= "+ found.size());
-            if(found.isPresent()){throw new IllegalArgumentException();}
-            for(int j = i+1; j < foodDtos.size(); j++) {
-                FoodDto foodDto2 = foodDtos.get(j);
-                if(foodDto.getName().equals(foodDto2.getName())){
-                    throw new IllegalArgumentException();
-                }
+    public OrderList registerOrder(OrderRequestDto orderRequestDto) {
+        Long restaurantId = orderRequestDto.getRestaurantId();
+        List<FoodOrder> orders = new ArrayList(0);
+        List<FoodOrderDto> foodOrderDtos = new ArrayList(0);
+        List<FoodOrderRequestDto> orderRequestDtos = orderRequestDto.getFoods();
+//        int orderSize = orderRequestDto.getFoods().size();
+        String cafeName = restaurantsRepository.findRestaurantsById(restaurantId).getName();
+        int deliveryFee = Math.toIntExact(restaurantsRepository.findRestaurantsById(restaurantId).getDeliveryFee());
+        int totalPrice = 0;
 
-
-            }
-
-            Food food = new Food(restaurantId, foodDto);
-            checkedFood.add(food);
+        for (FoodOrderRequestDto foodOrderRequestDto : orderRequestDtos ) {
+            FoodOrderDto foodOrderDto = new FoodOrderDto();
+            Long foodId = foodOrderRequestDto.getId();
+            foodOrderDto.setName(foodRepository.findByRestaurantIdAndId(restaurantId, foodId).getName());
+            foodOrderDto.setQuantity(foodOrderRequestDto.getQuantity());
+            foodOrderDto.setPrice(Math.toIntExact(foodRepository.findByRestaurantIdAndId(restaurantId, foodId).getPrice()));
+            foodOrderDtos.add(foodOrderDto);
+            totalPrice= totalPrice + foodOrderDto.getQuantity()*foodOrderDto.getPrice();
+            FoodOrder order = new FoodOrder(foodOrderDto);
+            orderRepository.save(order);
+            orders.add(order);
         }
-        for (Food passedFood : checkedFood ){
-            foodRepository.save(passedFood);
+        totalPrice += deliveryFee;
+
+        OrderList orderList = new OrderList(cafeName, deliveryFee, totalPrice, orders);
+        orderListRepository.save(orderList);
+        return orderList;
+
         }
+    public List<OrderList> findOrders() {
+        return orderListRepository.findAll();
+
+
     }
-
-    public List<Food> showFood(Long restaurantId) {
-
-    return foodRepository.findAllByRestaurantId(restaurantId);
-
-
-        //        List<Food> temp = foodRepository.findAll();
-//        FoodDto[] foodsResponse = temp.getBody();
-//        for (int i = 0; i < temp.size(); i++) {
-//            FoodDto temp2 = Arrays.stream(foodsResponse)
-//                    .filter(food -> "food"+i.getRestaurantId().equals(food.getRestaurantId()))
-//                    .findAny()
-//                    .orElse(null);
-//            return
-        }
-    }
+}

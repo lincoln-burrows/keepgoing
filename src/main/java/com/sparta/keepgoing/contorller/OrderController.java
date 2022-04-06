@@ -1,8 +1,9 @@
 package com.sparta.keepgoing.contorller;
 
-import com.sparta.keepgoing.dto.FoodDto;
+import com.sparta.keepgoing.dto.OrderRequestDto;
 import com.sparta.keepgoing.models.Food;
-import com.sparta.keepgoing.service.FoodService;
+import com.sparta.keepgoing.models.OrderList;
+import com.sparta.keepgoing.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,16 +15,16 @@ import java.util.List;
 public class OrderController {
 
 
-    private final FoodService foodService;
+    private final OrderService orderService;
 
-    @PostMapping("/restaurant/{restaurantId}/food/register")
-    public void registerFood(@PathVariable Long restaurantId, @RequestBody List<FoodDto> foodDtos){
-        foodService.registerFood(restaurantId, foodDtos);
-
+    @PostMapping("/order/request")
+    public OrderList orderFood(@RequestBody OrderRequestDto orderRequestDto){
+        return orderService.registerOrder(orderRequestDto);
     }
 
-    @GetMapping("/restaurant/{restaurantId}/foods")
-    public List<Food> showFood(@PathVariable Long restaurantId){return foodService.showFood(restaurantId);
+    @GetMapping("/orders")
+    public List<OrderList> showOrders(){
+        return orderService.findOrders();
     }
 
 

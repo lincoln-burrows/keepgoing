@@ -1,32 +1,25 @@
 package com.sparta.keepgoing.service;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.junit.jupiter.api.*;
-import org.junit.platform.commons.util.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 
-
-import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class RestaurantIntegrationTest {
-
-
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -35,13 +28,11 @@ class RestaurantIntegrationTest {
 
     private final List<RestaurantDto> registeredRestaurants = new ArrayList<>();
 
-
     @BeforeEach
     public void setup() {
         headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
     }
-
 
     @Nested
     @DisplayName("음식점 3개 등록 및 조회")
@@ -79,9 +70,6 @@ class RestaurantIntegrationTest {
 
             // 음식점 등록 성공 시, registeredRestaurants 에 추가
             registeredRestaurants.add(restaurantResponse);
-//            System.out.println((restaurantResponse.length);
-//            System.out.println("이름 : "+registeredRestaurants.get(0).getName());
-
         }
 
         @Test
@@ -154,43 +142,34 @@ class RestaurantIntegrationTest {
             registeredRestaurants.add(restaurantResponse);
         }
 
-
         @Test
         @Order(4)
         @DisplayName("등록된 모든 음식점 조회")
         void test4() {
-
-
-            System.out.println("테스트확인");
             // when
             ResponseEntity<RestaurantDto[]> response = restTemplate.getForEntity(
                     "/restaurants",
                     RestaurantDto[].class
             );
 
-
-
             // then
             assertEquals(HttpStatus.OK, response.getStatusCode());
             RestaurantDto[] responseRestaurants = response.getBody();
-
             assertNotNull(responseRestaurants);
             assertEquals(registeredRestaurants.size(), responseRestaurants.length);
-
             for (RestaurantDto responseRestaurant : responseRestaurants) {
                 RestaurantDto registerRestaurant = registeredRestaurants.stream()
                         .filter(restaurant -> responseRestaurant.getId().equals(restaurant.getId()))
                         .findAny()
                         .orElse(null);
+
                 assertNotNull(registerRestaurant);
                 assertEquals(registerRestaurant.getName(), responseRestaurant.getName());
                 assertEquals(registerRestaurant.getDeliveryFee(), responseRestaurant.getDeliveryFee());
                 assertEquals(registerRestaurant.getMinOrderPrice(), responseRestaurant.getMinOrderPrice());
             }
         }
-
     }
-
 
     @Nested
     @DisplayName("최소주문 가격")

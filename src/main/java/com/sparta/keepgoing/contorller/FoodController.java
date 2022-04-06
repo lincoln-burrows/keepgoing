@@ -2,6 +2,7 @@ package com.sparta.keepgoing.contorller;
 
 import com.sparta.keepgoing.dto.FoodDto;
 import com.sparta.keepgoing.models.Food;
+import com.sparta.keepgoing.models.OrderList;
 import com.sparta.keepgoing.models.Restaurants;
 import com.sparta.keepgoing.service.FoodService;
 import lombok.RequiredArgsConstructor;
