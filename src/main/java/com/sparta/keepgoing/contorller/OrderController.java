@@ -1,5 +1,6 @@
 package com.sparta.keepgoing.contorller;
 
+import com.sparta.keepgoing.dto.OrderDto;
 import com.sparta.keepgoing.dto.OrderRequestDto;
 import com.sparta.keepgoing.models.Food;
 import com.sparta.keepgoing.models.OrderList;
@@ -18,8 +19,9 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/order/request")
-    public OrderList orderFood(@RequestBody OrderRequestDto orderRequestDto){
-        return orderService.registerOrder(orderRequestDto);
+    public OrderDto orderFood(@RequestBody OrderRequestDto orderRequestDto){
+        orderService.registerOrder(orderRequestDto);
+        return orderService.makeOrderDto(orderRequestDto);
     }
 
     @GetMapping("/orders")
