@@ -17,10 +17,10 @@ public class FoodService {
 
     private final FoodRepository foodRepository;
     public void registerFood(Long restaurantId, List<FoodDto> foodDtos) {
-            List<Food> checkedFood = new ArrayList<>();
+        List<Food> checkedFood = new ArrayList<>();
 //        for (FoodDto foodDto : foodDtos) {
         for (int i = 0; i<foodDtos.size(); i++){
-                FoodDto foodDto = foodDtos.get(i);
+            FoodDto foodDto = foodDtos.get(i);
             String temp = foodDto.getName();
             System.err.println("name= "+ temp);
             Long pay = foodDto.getPrice();
@@ -52,7 +52,7 @@ public class FoodService {
 
     public List<Food> showFood(Long restaurantId) {
 
-    return foodRepository.findAllByRestaurantId(restaurantId);
+        return foodRepository.findAllByRestaurantId(restaurantId);
 
 
         //        List<Food> temp = foodRepository.findAll();
@@ -63,5 +63,5 @@ public class FoodService {
 //                    .findAny()
 //                    .orElse(null);
 //            return
-        }
     }
+}

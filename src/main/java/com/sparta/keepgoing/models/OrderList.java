@@ -31,14 +31,14 @@ public class OrderList {
 
     @OneToMany
     @JoinColumn
-    private List<FoodOrder> meal;
+    private List<FoodOrder> foods;
 
 
-    public OrderList(String cafeName, int deliveryFee, int totalPrice, List<FoodOrder> meal){
+    public OrderList(String cafeName, int deliveryFee, int totalPrice, List<FoodOrder> foods){
         this.restaurantName = cafeName;
         this.deliveryFee = deliveryFee;
         this.totalPrice = totalPrice;
-        this.meal = meal;
+        this.foods = foods;
     }
 //    public OrderList(OrderDto orderDto){
 //        this.restaurantName = orderDto.getRestaurantName();

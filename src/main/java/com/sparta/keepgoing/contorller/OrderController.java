@@ -19,9 +19,10 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/order/request")
-    public OrderDto orderFood(@RequestBody OrderRequestDto orderRequestDto){
-        orderService.registerOrder(orderRequestDto);
-        return orderService.makeOrderDto(orderRequestDto);
+    public OrderList orderFood(@RequestBody OrderRequestDto orderRequestDto){
+        return orderService.registerOrder(orderRequestDto);
+//        return orderService.makeOrderDto(orderRequestDto);
+
     }
 
     @GetMapping("/orders")

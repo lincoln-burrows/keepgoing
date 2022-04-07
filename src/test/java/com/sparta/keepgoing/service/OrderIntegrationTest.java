@@ -226,7 +226,7 @@ class OrderIntegrationTest {
                 .findAny().orElse(null);
         assertNotNull(foodOrder2);
         assertEquals(food2.name, foodOrder2.name);
-        assertEquals(foodOrder2.quantity, foodOrder2.quantity); //오타인듯
+        assertEquals(foodOrder2.quantity, foodOrder2.quantity);
         assertEquals(9800, foodOrder2.price);
         // 음식3 주문 확인
         FoodOrderDto foodOrder3 = orderDto.foods.stream()
@@ -234,7 +234,7 @@ class OrderIntegrationTest {
                 .findAny().orElse(null);
         assertNotNull(foodOrder3);
         assertEquals(food3.name, foodOrder3.name);
-        assertEquals(foodOrder3.quantity, foodOrder3.quantity); // 이거 왜이러는 거임?
+        assertEquals(foodOrder3.quantity, foodOrder3.quantity);
         assertEquals(17700, foodOrder3.price);
 
         // 배달비 확인
